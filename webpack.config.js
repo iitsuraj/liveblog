@@ -1,116 +1,61 @@
+const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const path = require('path');
-const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const paths = {
-  entry: './src/react/index.js',
-  out: './assets',
+module.exports = {
+    ...defaultConfig,
+    entry: {
+        app: path.resolve(process.cwd(), 'src', 'index.js'),
+        amp: path.resolve(process.cwd(), 'src', 'amp.js')
+    },
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+                defaultVendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10,
+                    reuseExistingChunk: true,
+                },
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true,
+                },
+            },
+        },
+    },
+    output: {
+        path: path.resolve(process.cwd(), 'assets'),
+        filename: '[name].js',
+        chunkFilename: '[name].bundle.js',
+        chunkLoadingGlobal: 'wpJsonpLiveBlog'
+    },
+    module: {
+        ...defaultConfig.module,
+        rules: defaultConfig.module.rules.map(rule => {
+            if (rule.test?.toString().includes('scss')) {
+                return {
+                    ...rule,
+                    use: rule.use.map(loader => {
+                        if (loader.loader?.includes('sass-loader')) {
+                            return {
+                                ...loader,
+                                options: {
+                                    ...loader.options,
+                                    sassOptions: {
+                                        includePaths: [
+                                            path.resolve(process.cwd(), 'src'),
+                                            path.resolve(process.cwd(), 'node_modules')
+                                        ]
+                                    }
+                                }
+                            };
+                        }
+                        return loader;
+                    })
+                };
+            }
+            return rule;
+        })
+    }
 };
-
-const webpackConfig = {
-  cache: true,
-  context: path.resolve(__dirname, './src'),
-
-  entry: {
-    app: path.join(__dirname, paths.entry),
-    amp: path.join(__dirname, './src/react/amp.js'),
-  },
-
-  output: {
-    path: path.join(__dirname, paths.out),
-    filename: '[name].js',
-    chunkFilename: '[name].bundle.js',
-    jsonpFunction: 'wpJsonpLiveBlog',
-  },
-
-  module: {
-    rules: [
-      // Run Babel and lint JS
-      {
-        test: /\.js$/,
-        exclude: [/node_modules/],
-        use: [
-          {
-            loader: 'babel-loader',
-          },
-          {
-            loader: 'eslint-loader',
-            options: {
-              configFile: '.eslintrc',
-              emitError: false,
-              emitWarning: true,
-            },
-          },
-        ],
-      },
-      {
-        test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: false,
-                minimize: true,
-              },
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: () => [
-                  autoprefixer({
-                    browsers: [
-                      'last 1 version',
-                      'ie >= 11',
-                    ],
-                  }),
-                ],
-              },
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                sourceMap: false,
-              },
-            },
-          ],
-        }),
-      },
-      {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            'css-loader',
-          ],
-        }),
-      },
-    ],
-  },
-
-  plugins: [
-    new ExtractTextPlugin({ // define where to save the file
-      filename: '[name].css',
-      allChunks: true,
-    }),
-    // Global vars for checking dev environment.
-    new webpack.DefinePlugin({
-      __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
-      __PROD__: JSON.stringify(process.env.NODE_ENV === 'production'),
-      __TEST__: JSON.stringify(process.env.NODE_ENV === 'test'),
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-    }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-  ],
-};
-
-// Production/Dev Specific Config
-if (process.env.NODE_ENV === 'production') {
-  webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
-} else {
-  webpackConfig.devtool = 'sourcemap';
-}
-
-module.exports = webpackConfig;

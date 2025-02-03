@@ -1,0 +1,12 @@
+@use 'sass:color';
+@use 'styles/variables' as *;
+@use 'sass-mq' as mq;
+
+// Utils
+@import "styles/core/utils/defaults";
+@import "styles/core/utils/colors";
+
+// Core Styles
+@use 'styles/core/utils/animations';
+@use 'styles/core/app';
+@use 'styles/core/editor';
