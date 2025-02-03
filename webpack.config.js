@@ -60,12 +60,7 @@ const webpackConfig = {
               loader: 'postcss-loader',
               options: {
                 plugins: () => [
-                  autoprefixer({
-                    browsers: [
-                      'last 1 version',
-                      'ie >= 11',
-                    ],
-                  }),
+                  autoprefixer(),
                 ],
               },
             },

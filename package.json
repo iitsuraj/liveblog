@@ -5,6 +5,7 @@
   "author": "Automattic",
   "private": true,
   "devDependencies": {
+    "@wordpress/browserslist-config": "^5.21.0",
     "autoprefixer": "^7.1.6",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
@@ -78,5 +79,8 @@
       "__TEST__": true
     },
     "verbose": true
-  }
+  },
+  "browserslist": [
+    "extends @wordpress/browserslist-config"
+  ]
 }
