@@ -1,0 +1,22 @@
+// Shared base styles used by both AMP and non-AMP
+@use 'sass:color';
+@use '../../variables' as *;
+@use '../utils/media' as mq;
+
+// Common entry styles
+.liveblog-entry {
+  display: flex;
+  background: $color-grey-x-light;
+  border-top: 2px solid $color-grey-mid-light;
+  border-bottom: 2px solid $color-grey-mid-light;
+  padding: 1em;
+  font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif;
+}
+
+// Common button styles
+.liveblog-btn {
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  display: inline-block;
+  // ... other shared button styles
+} 

@@ -1,0 +1,11 @@
+@use 'sass:color';
+@use '../../variables' as *;
+@use '../utils/media' as mq; 
+
+.liveblog-preview {
+  // ... styles ...
+
+  @include mq.mq($until: small) {
+    // ... styles ...
+  }
+} 

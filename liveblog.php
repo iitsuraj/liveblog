@@ -978,8 +978,8 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 					$use_rest_api = 1;
 				}
 
-				wp_enqueue_style( self::KEY, plugins_url( 'assets/dashboard/app.css', __FILE__ ), array(), self::VERSION );
-				wp_enqueue_script( 'liveblog-admin', plugins_url( 'assets/dashboard/app.js', __FILE__ ), array(), self::VERSION, false );
+				wp_enqueue_style( self::KEY, plugins_url( 'build/dashboard/app.css', __FILE__ ), array(), self::VERSION );
+				wp_enqueue_script( 'liveblog-admin', plugins_url( 'build/dashboard/app.js', __FILE__ ), array(), self::VERSION, false );
 				wp_localize_script(
 					'liveblog-admin',
 					'liveblog_admin_settings',
@@ -990,6 +990,7 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 						'short_error_message_template' => __( 'Error: {error-message}', 'liveblog' ),
 						'use_rest_api'                 => $use_rest_api,
 						'endpoint_url'                 => $endpoint_url,
+						'plugin_dir'                   => trailingslashit( plugin_dir_url( __FILE__ ) ),
 					)
 				);
 			}
@@ -1006,11 +1007,11 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 				return;
 			}
 
-			wp_enqueue_style( self::KEY, plugins_url( 'assets/app.css', __FILE__ ) );
-			wp_enqueue_style( self::KEY . '_theme', plugins_url( 'assets/theme.css', __FILE__ ) );
+			wp_enqueue_style( self::KEY, plugins_url( 'build/app.css', __FILE__ ) );
+			wp_enqueue_style( self::KEY . '_theme', plugins_url( 'build/theme.css', __FILE__ ) );
 
 			// Load Client Scripts
-			wp_enqueue_script( self::KEY, plugins_url( 'assets/app.js', __FILE__ ), array(), self::VERSION, true );
+			wp_enqueue_script( self::KEY, plugins_url( 'build/app.js', __FILE__ ), array(), self::VERSION, true );
 
 			if ( self::is_liveblog_editable() ) {
 				self::add_default_plupload_settings();
@@ -1025,7 +1026,7 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 					'liveblog_settings',
 					array(
 						'permalink'                    => get_permalink(),
-						'plugin_dir'                   => plugin_dir_url( __FILE__ ),
+						'plugin_dir'                   => trailingslashit( plugin_dir_url( __FILE__ ) ),
 						'post_id'                      => get_the_ID(),
 						'state'                        => self::get_liveblog_state(),
 						'is_liveblog_editable'         => self::is_liveblog_editable(),

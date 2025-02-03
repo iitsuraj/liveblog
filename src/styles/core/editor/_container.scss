@@ -1,10 +1,14 @@
+@use 'sass:color';
+@use '../../variables' as *;
+@use '../utils/media' as mq;
+
 .liveblog-editor-container {
   padding: .8rem;
   margin-bottom: .8rem;
   background: $color-grey-mid-light;
   border-top: 2px solid $color-grey-x-dark;
 
-  @include mq($until: x-small) {
+  @include mq.mq($until: x-small) {
     padding: .8rem 0 0 0;
     background: transparent;
   }
@@ -70,8 +74,13 @@
   margin-bottom: .6rem;
 }
 
-@include mq($until: small) {
+@include mq.mq($until: small) {
   .liveblog-editor-container .public-DraftEditor-content {
     margin-bottom: 0;
   }
+}
+
+.liveblog-key-events .liveblog-entry-delete-confirm {
+  top: 50%;
+  transform: #{"translateY(-50%)"};
 }

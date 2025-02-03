@@ -5,7 +5,7 @@
   "author": "Automattic",
   "private": true,
   "devDependencies": {
-    "@wordpress/scripts": "^26.0.0",
+    "@wordpress/scripts": "^30.10.0",
     "@redux-devtools/extension": "^3.2.5"
   },
   "dependencies": {
@@ -25,8 +25,7 @@
     "react-select": "^5.7.7",
     "redux": "^4.2.1",
     "redux-observable": "^2.0.0",
-    "rxjs": "^7.8.1",
-    "sass-mq": "^6.0.0"
+    "rxjs": "^7.8.1"
   },
   "scripts": {
     "build": "wp-scripts build",

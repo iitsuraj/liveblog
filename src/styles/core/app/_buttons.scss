@@ -1,3 +1,6 @@
+@use 'sass:color';
+@use '../../variables' as *;
+
 /**
  * Base button styles.
  * 1. Corrects inability to style clickable `input` types in iOS.
@@ -24,8 +27,7 @@
   transition: all .3s ease-in-out;
 
   &:hover {
-    transition: all .3s ease-in-out;
-    text-decoration: none;
+    background: color.adjust($color-grey-dark, $lightness: -10%);
   }
 }
 
@@ -51,7 +53,7 @@
 }
 
 .liveblog-update-btn:hover {
-  background: darken($color-primary, 10%);
+  background: color.adjust($color-primary, $lightness: -10%);
 }
 
 .liveblog-btn-delete {
@@ -61,6 +63,6 @@
 }
 
 .liveblog-btn-delete:hover {
-  background: darken($color-warning, 10%);
+  background: color.adjust($color-warning, $lightness: -10%);
 }
 

@@ -1,0 +1,17 @@
+@use 'sass:color';
+@use '../../variables' as *;
+@use '../utils/media' as mq;
+@use '../shared/base';
+
+// Regular WordPress-specific styles
+.liveblog-editor {
+  // ... editor-specific styles
+}
+
+// Regular media embeds
+.liveblog-entry {
+  iframe,
+  .twitter-tweet {
+    margin: 0 0 1.5em;
+  }
+} 

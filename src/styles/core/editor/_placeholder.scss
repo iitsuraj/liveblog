@@ -1,3 +1,7 @@
+@use 'sass:color';
+@use '../../variables' as *;
+@use '../utils/media' as mq;
+
 .liveblog-placeholder {
   width: 100%;
   display: flex;
@@ -18,4 +22,15 @@
 
 .liveblog-placeholder-text {
   margin-top: 20px;
+}
+
+.liveblog-editor-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: $color-grey-x-light;
+  color: $color-grey-base;
+  padding: .8rem;
+  font-size: .9rem;
+  pointer-events: none;
 }

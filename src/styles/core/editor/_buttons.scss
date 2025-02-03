@@ -1,3 +1,8 @@
+@use 'sass:color';
+@use 'sass:math';
+@use '../../variables' as *;
+@use '../utils/media' as mq;
+
 .liveblog-editor-btn {
   -webkit-appearance: none;
   box-sizing: border-box;
@@ -39,7 +44,7 @@
   align-items: center;
   flex-grow: 1;
 
-  @include mq($until: x-small) {
+  @include mq.mq($until: x-small) {
     justify-content: center;
     margin-top: .25rem;
   }
@@ -58,7 +63,7 @@
 }
 
 .liveblog-editor-action-btn:hover {
-  background: lighten($color-primary, 5%);
+  background: color.adjust($color-primary, $lightness: 5%);
 }
 
 .liveblog-editor-action-btn.has-icon {
@@ -81,7 +86,7 @@
 }
 
 .liveblog-editor-cancel-btn:hover {
-  background: lighten($color-warning, 5%);
+  background: color.adjust($color-warning, $lightness: 5%);
 }
 
 .liveblog-editor-delete {
@@ -92,7 +97,7 @@
 
 .liveblog-editor-delete:hover {
   transition: none;
-  transform: scale(1.1);
+  transform: #{"scale(1.1)"};
 }
 
 .liveblog-image-upload-btn {
@@ -115,7 +120,7 @@
   margin-right: .35rem;
 }
 
-@include mq($until: small) {
+@include mq.mq($until: small) {
   .liveblog-image-upload-btn-text {
     display: none;
   }
@@ -141,7 +146,7 @@
 
 .liveblog-publish-btn:hover,
 .liveblog-save-btn:hover {
-  background: lighten($color-primary, 5%);
+  background: color.adjust($color-primary, $lightness: 5%);
 }
 
 .liveblog-save-btn,

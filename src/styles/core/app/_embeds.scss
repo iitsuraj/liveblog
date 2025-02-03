@@ -1,0 +1,11 @@
+@use 'sass:color';
+@use '../../variables' as *;
+@use '../utils/media';
+
+.liveblog-entry {
+  amp-youtube, 
+  amp-instagram, 
+  amp-vine {
+    margin: 0 0 1.5em;
+  }
+} 

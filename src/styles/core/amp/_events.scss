@@ -1,0 +1,10 @@
+@use 'sass:color';
+@use '../../variables' as *;
+@use '../utils/media';
+
+.liveblog-event {
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+}
+
+// ... (AMP-specific event styles from amp.scss) 

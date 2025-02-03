@@ -11,7 +11,7 @@ Polyfills();
 const store = configureStore();
 
 /* eslint-disable camelcase, no-undef */
-__webpack_public_path__ = `${window.liveblog_settings.plugin_dir}assets/`;
+__webpack_public_path__ = `${window.liveblog_settings.plugin_dir}build/`;
 
 ReactDOM.render(
   <Provider store={store}>

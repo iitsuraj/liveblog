@@ -1,0 +1,105 @@
+@use 'sass:color';
+@use '../../variables' as *;
+@use '../utils/media' as mq;
+
+.liveblog-entry {
+  display: flex;
+  background: $color-grey-x-light;
+  border-top: 2px solid $color-grey-mid-light;
+  border-bottom: 2px solid $color-grey-mid-light;
+  padding: 1em;
+  font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif;
+
+  @include mq.mq($until: medium) {
+    font-size: 14px;
+  }
+}
+
+.liveblog-entry-main .liveblog-entry-content p {
+  margin: 16px 0;
+}
+
+.liveblog-entry a, .liveblog-entry a:visited {
+  color: $color-grey-dark;
+}
+
+.liveblog-entry-main {
+  flex-grow: 1;
+}
+
+.liveblog-entry.is-key-event {
+  border-top: 2px solid $color-grey-x-dark;
+}
+
+.liveblog-entry-edit {
+  margin-left: 60px;
+
+  @include mq.mq($until: medium) {
+    margin-left: 0;
+  }
+}
+
+.liveblog-entry-content {
+  padding-top: 10px;
+}
+
+.liveblog-meta {
+  color: $color-grey-base;
+}
+
+.liveblog-entry-aside {
+  flex-basis: 70px;
+  min-width: 70px;
+  margin-right: 10px;
+}
+
+.liveblog-meta-time {
+  flex-basis: 60px;
+  text-decoration: none;
+}
+
+.entry-content .liveblog-meta-time,
+.entry-content .liveblog-meta-time:hover,
+.entry-content .liveblog-meta-time:focus {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.liveblog-meta-time span {
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.liveblog-meta-time span:first-child {
+  font-weight: 600;
+  color: $color-grey-dark;
+  margin-bottom: 5px;
+}
+
+.liveblog-meta-author-name {
+  font-size: 13px;
+  margin-left: 8px;
+}
+
+.liveblog-meta-author-avatar {
+  border-radius: 50%;
+  overflow: hidden;
+  width: 30px;
+  height: 30px;
+}
+
+.liveblog-entry-tools {
+  margin-left: 60px;
+
+  @include mq.mq($until: medium) {
+    margin-left: 0;
+  }
+}
+
+.liveblog-hash {
+  color: $color-primary;
+}
+
+.liveblog-entry-width {
+  width: #{"calc(100% - 60px)"};
+} 

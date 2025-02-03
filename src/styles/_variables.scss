@@ -1,0 +1,40 @@
+@forward 'sass:color';
+@use 'sass:math';
+
+// Base measurements
+$base-border-size: 1px;
+$base-border-radius: 3px;
+$base-drop-shadow: 0 2px 6px 0 rgba(0, 0, 0, .25);
+
+// Typography
+$base-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+
+// Export variables that were previously globally defined
+$color-primary: #0073aa;
+
+// Main colors
+$color-secondary: #2196f3;
+$color-accent: #2196f3;
+$color-warning: #dc3232;
+$color-warning-light: #dc3232;
+
+// Grey colors
+$color-grey-x-light: #f7f7f7;
+$color-grey-light: #bbb;
+$color-grey-mid-light: #eee;
+$color-grey-mid: #d1d1d1;
+$color-grey-base: #666;
+$color-grey-mid-dark: #777;
+$color-grey-dark: #333;
+$color-grey-x-dark: #111;
+
+// Breakpoints for sass-mq
+$mq-breakpoints: (
+  xx-small: 320px,
+  x-small:  540px,
+  small:    760px,
+  medium:   940px,
+  large:    1024px,
+  x-large:  1280px,
+  xx-large: 1400px
+); 

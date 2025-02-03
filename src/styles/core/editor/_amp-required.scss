@@ -1,3 +1,7 @@
-@import "./container";
-@import "./placeholder";
+@use 'sass:color';
+@use '../../variables' as *;
+@use '../utils/media' as mq;
+
+@use "./container";
+@use "./placeholder";
 
