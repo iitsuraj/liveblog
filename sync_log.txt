@@ -1,9 +1,0 @@
-[2025-05-17 14:55:00] ===== Starting Sync =====
-[2025-05-17 14:55:00] Remote: https://www.jansatta.com/wp-content/plugins/liveblog/src | Local: ./src
-[2025-05-17 14:55:00] ===== Sync Complete =====
-[2025-05-17 14:55:52] ===== Starting Sync =====
-[2025-05-17 14:55:52] Remote: https://www.jansatta.com/wp-content/plugins/liveblog/src | Local: src
-[2025-05-17 14:55:53] ===== Sync Complete =====
-[2025-05-17 14:58:03] ===== Starting Sync =====
-[2025-05-17 14:58:03] Remote: https://www.jansatta.com/wp-content/plugins/liveblog/src | Local: ./src
-[2025-05-17 14:58:03] ===== Sync Complete =====
