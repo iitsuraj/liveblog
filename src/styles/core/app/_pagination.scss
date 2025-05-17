@@ -3,6 +3,24 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  width: 100%;
+}
+
+.loadmore-button {
+  text-align: center;
+  width: 100%;
+  background: #f6f6f6;
+  border: none;
+  outline: none;
+  font-size: .8125rem;
+  font-weight: 700;
+  line-height: 1.75;
+  position: relative;
+  padding: 0.625rem;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-family: sans-serif;
 }
 
 .liveblog-pagination > * {
@@ -24,3 +42,12 @@
 .liveblog-btn--hide {
   visibility: hidden;
 }
+
+.ie-liveblog-full-width-new-live-blog{
+  .liveblog-pagination{
+    width:100%;
+  }
+  .liveblog-editor-container{
+    width:100%;
+  }
+} 

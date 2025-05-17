@@ -2,7 +2,6 @@
   padding: .8rem;
   margin-bottom: .8rem;
   background: $color-grey-mid-light;
-  border-top: 2px solid $color-grey-x-dark;
 
   @include mq($until: x-small) {
     padding: .8rem 0 0 0;
@@ -33,13 +32,6 @@
 .liveblog-editor-container .public-DraftEditor-content,
 .liveblog-preview {
   background: #fff;
-}
-
-.liveblog-entry-edit .liveblog-editor-container {
-  margin: .8rem 0 0;
-  padding: 0;
-  border: none;
-  background: transparent;
 }
 
 .liveblog-editor-inner-container {
@@ -74,4 +66,14 @@
   .liveblog-editor-container .public-DraftEditor-content {
     margin-bottom: 0;
   }
+}
+
+.liveblog-editor-heading {
+	display: block;
+	margin-bottom: 16px;
+
+	input {
+		width: 100%;
+		display: block;
+	}
 }

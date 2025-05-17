@@ -1,9 +1,10 @@
 import types from './actionTypes';
 
-export const getEntries = (page, hash = false) => ({
+export const getEntries = (page, hash = false, order = 'ASC') => ({
   type: types.GET_ENTRIES,
   page,
   hash,
+  order,
 });
 
 export const getEntriesPaginated = (page, scrollTo) => ({
@@ -12,8 +13,19 @@ export const getEntriesPaginated = (page, scrollTo) => ({
   scrollTo,
 });
 
+export const getEntriesSorted = order => ({
+  type: types.GET_ENTRIES_SORTED,
+  order,
+});
+
 export const getEntriesSuccess = (payload, renderNewEntries) => ({
   type: types.GET_ENTRIES_SUCCESS,
+  payload,
+  renderNewEntries,
+});
+
+export const getEntriesLoaded = (payload, renderNewEntries) => ({
+  type: types.GET_LOADED_ENTRIES,
   payload,
   renderNewEntries,
 });
@@ -97,4 +109,3 @@ export const mergePollingIntoEntries = (payload, pages) => ({
   payload,
   pages,
 });
-

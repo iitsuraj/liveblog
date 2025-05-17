@@ -8,6 +8,7 @@ import types from '../actions/actionTypes';
 
 import {
   getEntriesSuccess,
+  getEntriesLoaded,
   getEntriesFailed,
   pollingSuccess,
   createEntrySuccess,
@@ -31,12 +32,7 @@ import {
 
 import {
   shouldRenderNewEntries,
-  getScrollToId,
 } from '../utils/utils';
-
-import {
-  scrollToEntry,
-} from '../actions/userActions';
 
 const getEntriesEpic = (action$, store) =>
   action$.ofType(types.GET_ENTRIES)
@@ -68,12 +64,14 @@ const getEntriesEpic = (action$, store) =>
 
 const getPaginatedEntriesEpic = (action$, store) =>
   action$.ofType(types.GET_ENTRIES_PAGINATED)
-    .switchMap(({ page, scrollTo }) =>
-      getEntries(page, store.getState().config, store.getState().api.newestEntry)
+    .switchMap(({ page }) =>
+      getEntries(
+        page, store.getState().config, store.getState().api.newestEntry, store.getState().api.order,
+      )
         .timeout(10000)
         .flatMap(res =>
           concat(
-            of(getEntriesSuccess(
+            of(getEntriesLoaded(
               res.response,
               shouldRenderNewEntries(
                 store.getState().pagination.page,
@@ -81,7 +79,24 @@ const getPaginatedEntriesEpic = (action$, store) =>
                 store.getState().polling.entries,
               ),
             )),
-            of(scrollToEntry(getScrollToId(res.response.entries, scrollTo))),
+          ),
+        )
+        .catch(error => of(getEntriesFailed(error))),
+    );
+
+const getSortedEntriesEpic = (action$, store) =>
+  action$.ofType(types.GET_ENTRIES_SORTED)
+    .switchMap(({ order }) =>
+      getEntries(1, store.getState().config, store.getState().api.newestEntry, order)
+        .timeout(10000)
+        .map(res =>
+          getEntriesSuccess(
+            res.response,
+            shouldRenderNewEntries(
+              store.getState().pagination.page,
+              store.getState().api.entries,
+              store.getState().polling.entries,
+            ),
           ),
         )
         .catch(error => of(getEntriesFailed(error))),
@@ -121,6 +136,7 @@ const getEntriesAfterChangeEpic = action$ =>
 export default combineEpics(
   getEntriesEpic,
   getPaginatedEntriesEpic,
+  getSortedEntriesEpic,
   createEntryEpic,
   updateEntryEpic,
   deleteEntryEpic,

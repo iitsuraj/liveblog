@@ -8,46 +8,19 @@ import * as userActions from '../actions/userActions';
 class PaginationContainer extends Component {
   render() {
     const { page, pages, getEntriesPaginated } = this.props;
-
-    const isFirstPage = (page === 1);
     const isLastPage = (page === pages);
 
     return (
-      <div className="liveblog-pagination">
-        <div>
+      !isLastPage && (
+        <div className="liveblog-pagination">
           <button
-            disabled={isFirstPage}
-            className={`liveblog-btn liveblog-pagination-btn liveblog-pagination-first ${isFirstPage && 'liveblog-btn--hide'}`}
-            onClick={() => getEntriesPaginated(1, 'first')}
-          >
-            First
-          </button>
-          <button
-            disabled={isFirstPage}
-            className={`liveblog-btn liveblog-pagination-btn liveblog-pagination-prev ${isFirstPage && 'liveblog-btn--hide'}`}
-            onClick={() => getEntriesPaginated((page - 1), 'last')}
-          >
-            Prev
-          </button>
-        </div>
-        <span className="liveblog-pagination-pages">{page} of {pages}</span>
-        <div>
-          <button
-            disabled={isLastPage}
-            className={`liveblog-btn liveblog-pagination-btn liveblog-pagination-next ${isLastPage && 'liveblog-btn--hide'}`}
+            className="loadmore-button loadmore-button__plus"
             onClick={() => getEntriesPaginated((page + 1), 'first')}
           >
-            Next
-          </button>
-          <button
-            disabled={isLastPage}
-            className={`liveblog-btn liveblog-pagination-btn liveblog-pagination-last ${isLastPage && 'liveblog-btn--hide'}`}
-            onClick={() => getEntriesPaginated(pages, 'first')}
-          >
-            Last
+            Load More
           </button>
         </div>
-      </div>
+      )
     );
   }
 }

@@ -10,9 +10,9 @@ import {
 
 const getParams = x => `?${Object.keys(x).map(p => `&${p}=${x[p]}`).join('')}`;
 
-export function getEntries(page, config, newestEntry) {
+export function getEntries(page, config, newestEntry, order = 'ASC') {
   const settings = {
-    url: `${config.endpoint_url}get-entries/${page}/${newestEntry.id || config.latest_entry_id}-${newestEntry.timestamp || config.latest_entry_timestamp}`,
+    url: `${config.endpoint_url}get-entries/${page}/${newestEntry.id || config.latest_entry_id}-${newestEntry.timestamp || config.latest_entry_timestamp}/${order}/`,
     method: 'GET',
     crossDomain: config.cross_domain,
   };
@@ -44,10 +44,13 @@ export function createEntry(entry, config, nonce = false) {
     method: 'POST',
     body: {
       crud_action: 'insert',
+      heading: entry.heading,
       post_id: config.post_id,
       content: entry.content,
       author_id: entry.author,
+      highlight: entry.highlight,
       contributor_ids: entry.contributors,
+	  heading_tag: entry.headingTag,
     },
     headers: {
       'Content-Type': 'application/json',
@@ -68,9 +71,12 @@ export function updateEntry(entry, config, nonce = false) {
       crud_action: 'update',
       post_id: config.post_id,
       entry_id: entry.id,
+      heading: entry.heading,
       content: entry.content,
       author_id: entry.author,
+      highlight: entry.highlight,
       contributor_ids: entry.contributors,
+	  heading_tag: entry.headingTag,
     },
     headers: {
       'Content-Type': 'application/json',

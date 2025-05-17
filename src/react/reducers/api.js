@@ -23,12 +23,34 @@ export const api = (state = initialState, action) => {
         loading: true,
       };
 
+    case 'GET_ENTRIES_SORTED':
+      return {
+        ...state,
+        error: false,
+        loading: true,
+        newestEntry: false,
+        page: 1,
+        order: action.order,
+      };
+
     case 'GET_ENTRIES_SUCCESS':
       return {
         ...state,
         error: false,
         loading: false,
         entries: applyUpdate({}, action.payload.entries),
+        newestEntry: getNewestEntry(
+          state.newestEntry,
+          action.payload.entries[0],
+        ),
+      };
+
+    case 'GET_LOADED_ENTRIES':
+      return {
+        ...state,
+        error: false,
+        loading: false,
+        entries: applyUpdate(state.entries, action.payload.entries),
         newestEntry: getNewestEntry(
           state.newestEntry,
           action.payload.entries[0],

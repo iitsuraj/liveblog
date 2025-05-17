@@ -1,13 +1,15 @@
 /* eslint-disable no-return-assign */
+import DOMPurify from 'dompurify';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as apiActions from '../actions/apiActions';
 import * as userActions from '../actions/userActions';
-import { triggerOembedLoad, timeAgo, formattedTime } from '../utils/utils';
+import { triggerOembedLoad, formattedTime } from '../utils/utils';
 import Editor from '../components/Editor';
 import DeleteConfirmation from '../components/DeleteConfirmation';
+import SocialShare from '../components/SocialShare';
 
 class EntryContainer extends Component {
   constructor(props) {
@@ -21,7 +23,9 @@ class EntryContainer extends Component {
     this.close = () => this.props.entryEditClose(this.props.entry.id);
     this.delete = () => this.props.deleteEntry(this.props.entry.id);
     this.scrollIntoView = () => {
-      this.node.scrollIntoView({ block: 'start', behavior: 'instant' });
+      const rect = this.node.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      document.documentElement.scrollTop = (rect.top + scrollTop) - 150;
       this.props.resetScrollOnEntry(`id_${this.props.entry.id}`);
     };
     this.state = {
@@ -77,19 +81,73 @@ class EntryContainer extends Component {
 
   render() {
     const { entry, config } = this.props;
-
+    const tagMap = { h2: 'h2', h3: 'h3' };
+    const HeadingTag = tagMap[entry.heading_tag] || 'div';
+    if (window.liveblog_settings.liveblog_template === 'twocolumn') {
+      return (
+        <div id={entry.id}>
+          <div
+            id={`id_${entry.id}`}
+            ref={node => this.node = node}
+            className='brdr20 liveblog-entry-twocolumn'
+          >
+            <div className="liveblog-entry-main">
+              {this.state.showPopup ?
+                <DeleteConfirmation
+                  text="Are you sure you want to delete this entry?"
+                  onConfirmDelete={this.delete}
+                  onCancel={this.togglePopup.bind(this)}
+                />
+                : null
+              }
+              {
+                this.isEditing()
+                  ? (
+                    <div className="liveblog-entry-edit">
+                      <Editor entry={entry} isEditing={true} />
+                    </div>
+                  )
+                  : (
+                    <div>
+                      <div className="lvblg-box-shr">
+                        <div className="ieo-datetime">
+                          <span>{formattedTime(entry.entry_time, config.utc_offset, 'H:i')} (IST) </span>
+                          <span>{formattedTime(entry.entry_time, config.utc_offset, 'j M Y')}</span>
+                        </div>
+                        <SocialShare entry={entry} />
+                      </div>
+                      <div className="lvblg-box">
+                        {
+                          <HeadingTag
+                            className="heading-lvblg"
+                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.heading) }} // phpcs:ignore WordPressVIPMinimum.JS.DangerouslySetInnerHTML.Found
+                          />
+                        }
+                        <div
+                          className="body-lvblg"
+                          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.render, { ADD_TAGS: ['iframe'], KEEP_CONTENT: false, ADD_ATTR: ['target'] }) }} />
+                      </div>
+                      <div className="clear"></div>
+                    </div>
+                  )
+              }
+              {this.entryActions()}
+            </div>
+          </div>
+          { entry.ads && (
+            <div
+              className="liveblog-entry-ad" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.ads) }} // phpcs:ignore WordPressVIPMinimum.JS.DangerouslySetInnerHTML.Found
+            />
+          ) }
+        </div>
+      );
+    }
     return (
       <article
         id={`id_${entry.id}`}
         ref={node => this.node = node}
         className={`liveblog-entry ${entry.key_event ? 'is-key-event' : ''} ${entry.css_classes}`}
       >
-        <aside className="liveblog-entry-aside">
-          <a className="liveblog-meta-time" href={entry.share_link} target="_blank">
-            <span>{timeAgo(entry.entry_time)}</span>
-            <span>{formattedTime(entry.entry_time, config.utc_offset, config.date_format)}</span>
-          </a>
-        </aside>
         <div className="liveblog-entry-main">
           {this.state.showPopup ?
             <DeleteConfirmation
@@ -100,24 +158,6 @@ class EntryContainer extends Component {
             : null
           }
           {
-            (entry.authors && entry.authors.length > 0) &&
-            <header className="liveblog-meta-authors">
-              {
-                entry.authors.map(author => (
-                  <div className="liveblog-meta-author" key={author.id}>
-                    { author.avatar &&
-                      <div
-                        className="liveblog-meta-author-avatar"
-                        dangerouslySetInnerHTML={{ __html: author.avatar }} />
-                    }
-                    <span className="liveblog-meta-author-name"
-                      dangerouslySetInnerHTML={{ __html: author.name }} />
-                  </div>
-                ))
-              }
-            </header>
-          }
-          {
             this.isEditing()
               ? (
                 <div className="liveblog-entry-edit">
@@ -125,10 +165,29 @@ class EntryContainer extends Component {
                 </div>
               )
               : (
-                <div
-                  className="liveblog-entry-content"
-                  dangerouslySetInnerHTML={{ __html: entry.render }}
-                />
+                <div>
+                  <div>
+                    <span className="liveblog-meta-time">
+                      {formattedTime(entry.entry_time, config.utc_offset, 'H:i')} (IST) {formattedTime(entry.entry_time, config.utc_offset, 'j M Y')}
+                    </span>
+                  </div>
+				  {
+					entry.heading_tag === 'h3' ?
+						<h3 className="liveblog-entry-heading" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.heading) }} />
+						: entry.heading_tag === 'h2' ?
+						<h2 className="liveblog-entry-heading" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.heading) }} />
+						: <div className="liveblog-entry-heading" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.heading) }} />
+				  }
+                  <div
+                    className="liveblog-entry-content"
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.render, { ADD_TAGS: ['iframe'], KEEP_CONTENT: false, ADD_ATTR: ['target'] }) }} />
+                  <SocialShare entry={entry} />
+                  { entry.ads && (
+                    <div
+                      className="liveblog-entry-ad"
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(entry.ads) }} />
+                  ) }
+                </div>
               )
           }
           {this.entryActions()}

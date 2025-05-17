@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Async } from 'react-select';
+// import { Async } from 'react-select';
 import 'react-select/dist/react-select.css';
 import { html } from 'js-beautify';
 import { debounce } from 'lodash-es';
@@ -18,7 +18,7 @@ import * as userActions from '../actions/userActions';
 import { getAuthors, getHashtags, uploadImage } from '../services/api';
 
 import PreviewContainer from './PreviewContainer';
-import AuthorSelectOption from '../components/AuthorSelectOption';
+// import AuthorSelectOption from '../components/AuthorSelectOption';
 import HTMLInput from '../components/HTMLInput';
 
 import Editor, { decorators, convertFromHTML, convertToHTML } from '../Editor/index';
@@ -54,6 +54,9 @@ class EditorContainer extends Component {
       mode: 'editor',
       readOnly: false,
       rawText: props.entry ? props.entry.content : '',
+      heading: props.entry ? props.entry.heading : '',
+	  headingTag: props.entry ? props.entry.headingTag : 'div',
+      highlight: props.entry ? props.entry.highlight : '',
     };
 
     this.onChange = editorState => this.setState({
@@ -91,7 +94,8 @@ class EditorContainer extends Component {
 
   publish() {
     const { updateEntry, entry, entryEditClose, createEntry, isEditing } = this.props;
-    const { editorState, authors } = this.state;
+    const { editorState, authors, heading, highlight } = this.state;
+	let { headingTag } = this.state;
     const content = this.getContent();
     const authorIds = authors.map(author => author.id);
     const author = authorIds.length > 0 ? authorIds[0] : false;
@@ -111,8 +115,11 @@ class EditorContainer extends Component {
     if (isEditing) {
       updateEntry({
         id: entry.id,
+        heading,
+		headingTag,
         content,
         author,
+        highlight,
         contributors,
       });
       entryEditClose(entry.id);
@@ -120,9 +127,12 @@ class EditorContainer extends Component {
     }
 
     createEntry({
+      heading,
       content,
       author,
       contributors,
+      highlight,
+	  headingTag,
     });
 
     const newEditorState = EditorState.push(
@@ -131,7 +141,7 @@ class EditorContainer extends Component {
     );
 
     this.onChange(newEditorState);
-    this.setState({ readOnly: false });
+    this.setState({ readOnly: false, heading: '', highlight: '', headingTag: 'div' });
   }
 
   onSelectAuthorChange(value) {
@@ -234,15 +244,57 @@ class EditorContainer extends Component {
       editorState,
       suggestions,
       mode,
-      authors,
+      // authors,
       readOnly,
+      heading,
     } = this.state;
 
-    const { isEditing, config } = this.props;
+	let { headingTag } = this.state;
+    const { isEditing, config, entry } = this.props;
+    const elementId = (entry && entry.id) ? entry.id : 1;
+
+	headingTag = isEditing && entry ? entry.heading_tag : headingTag;
+	const options = [
+		"div",
+		"h3",
+		"h2"
+    ];
+	const validSiteNames = ['indianexpress', 'fe', 'loksatta'];
 
     return (
       <div className="liveblog-editor-container">
         {!isEditing && <h1 className="liveblog-editor-title">Add New Entry</h1>}
+
+        <label className="liveblog-editor-heading" htmlFor={ `heading-${elementId}` }>
+          <span>Heading</span>
+          <input
+            id={`heading-${elementId}`}
+            type="text"
+            value={ heading }
+            onChange={(event) => {
+              this.setState({ heading: event.target.value });
+            } }
+          />
+		{ validSiteNames.includes( window.liveblog_settings.site_name ) && (
+				<select
+					onChange={ (event) => {
+					this.setState({ headingTag: event.target.value });
+					}}
+				>
+					{ options.map((option, index) => {
+						let selected = "";
+						if (headingTag === option) {
+							selected = "selected";
+						} else if (headingTag === '' && option === 'div') {
+							selected = "selected";
+						}
+						return <option key={index} value={option} selected={selected} >{option}</option>;
+					})}
+				</select>
+			)
+		}
+        </label>
+
         <div className="liveblog-editor-tabs">
           <button
             className={`liveblog-editor-tab ${mode === 'editor' ? 'is-active' : ''}`}
@@ -298,7 +350,7 @@ class EditorContainer extends Component {
             width="100%"
           />
         }
-        <h2 className="liveblog-editor-subTitle">Authors:</h2>
+        {/* <h2 className="liveblog-editor-subTitle">Authors:</h2>
         <Async
           multi={true}
           value={authors}
@@ -309,7 +361,20 @@ class EditorContainer extends Component {
           loadOptions={this.getUsers}
           clearable={false}
           cache={false}
+        /> */}
+        <input
+          type="checkbox"
+          checked={this.state.highlight}
+          id={ `highlight-${elementId}` }
+          name="highlight"
+          value="highlight"
+          onChange={ (event) => {
+            this.setState({
+              highlight: event.target.checked,
+            });
+          } }
         />
+        <label htmlFor={ `highlight-${elementId}` }> Highlight</label>
         <button className="liveblog-btn liveblog-publish-btn" onClick={this.publish.bind(this)}>
           {isEditing ? 'Publish Update' : 'Publish New Entry'}
         </button>

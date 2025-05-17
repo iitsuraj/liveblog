@@ -1,6 +1,45 @@
+.liveblog-welcome-note {
+	font-size: 18px;
+	display: block;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-family: var( --wp--custom--font-main );
+	background: #f6f6f6;
+	padding: 10px;
+	margin-bottom: 16px;
+}
+
+.liveblog-sort-container {
+	margin-bottom: 15px;
+	font-family: sans-serif;
+
+	label span {
+		margin-right: 12px;
+		font-weight: 600;
+	}
+
+	select {
+		border: 1px solid #bbb;
+		background: #fff;
+		border-radius: 4px;
+		padding: 3px 4px;
+		width: 110px;
+	}
+
+}
+
 .liveblog-feed {
-  min-height: 200px;
   position: relative;
+  padding-left: 27px;
+
+  &:before {
+	  content: "";
+	width: 1px;
+	height: 100%;
+	position: absolute;
+	left: 10px;
+	background: rgba(179, 179, 179, 0.6);
+  }
 }
 
 .liveblog-feed.is-loading::after {

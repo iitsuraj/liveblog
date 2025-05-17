@@ -34,20 +34,25 @@
   padding: .5rem 1rem;
 }
 
-.liveblog-update-btn-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  position: sticky;
-  z-index: 5;
-  top: 50px;
-}
-
 .liveblog-update-btn {
-  color: #fff;
   background: $color-primary;
-  font-size: 16px;
-  border-radius: 50px;
+  font-size: 14px;
+  border-radius: 0;
+  text-transform: capitalize;
+  padding: 5px 11px;
+  font-family: var(--wp--custom--font-main);
+  font-weight: 500;
+  position: fixed;
+  right: 20px;
+  width: auto;
+  bottom: 20px;
+  top: auto;
+  color: #fff;
+  z-index: 2;
+
+  &[update] {
+	  position: fixed;
+  }
 }
 
 .liveblog-update-btn:hover {
@@ -63,4 +68,3 @@
 .liveblog-btn-delete:hover {
   background: darken($color-warning, 10%);
 }
-

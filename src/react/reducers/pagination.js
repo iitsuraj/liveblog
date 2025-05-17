@@ -16,6 +16,7 @@ export const pagination = (state = initialState, action) => {
       };
 
     case 'GET_ENTRIES_SUCCESS':
+    case 'GET_LOADED_ENTRIES':
       return {
         ...state,
         pages: Math.max(action.payload.pages, 1),

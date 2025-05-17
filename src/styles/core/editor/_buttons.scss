@@ -132,7 +132,11 @@
 
 .liveblog-publish-btn,
 .liveblog-save-btn {
+  font-weight: 600;
   background: $color-primary;
+  font-family: var( --wp--custom--font-main );
+  color: white;
+  padding: 10px;
 }
 
 .liveblog-publish-btn {
