@@ -23,5 +23,14 @@
     },
     "sourceType": "module",
     "allowImportExportEverywhere": true
+  },
+  "settings": {
+	"react": {
+	  "version": "16.0"
+	}
+  },
+ "rules": {
+    "camelcase": "off",
+    "no-nested-ternary": "off"
   }
 }

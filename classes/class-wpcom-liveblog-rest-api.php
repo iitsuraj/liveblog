@@ -299,6 +299,40 @@ class WPCOM_Liveblog_Rest_Api {
 			)
 		);
 
+				/*
+		 * Get entries for a post in paged format
+		 *
+		 * /<post_id>/get-entries/<page>/<last_known_entry>
+		 *
+		 */
+		register_rest_route(
+			self::$api_namespace,
+    		'/(?P<post_id>\d+)/get-entries/(?P<page>\d+)/(?P<last_known_entry>[^\/]+)(?:/(?P<order>ASC|DESC))?',
+			array(
+				'methods'  => WP_REST_Server::READABLE,
+				'callback' => array( __CLASS__, 'get_entries_paged' ),
+				'args'     => array(
+					'post_id'          => array(
+						'required' => true,
+					),
+					'page'             => array(
+						'required' => true,
+					),
+					'last_known_entry' => array(
+						'required' => true,
+					),
+					'order' => array(
+						'required' => false,
+						'default' => 'ASC', // Default to newest first
+						'validate_callback' => function($param) {
+							return in_array(strtoupper($param), ['ASC', 'DESC']);
+						},
+            	),
+				),
+				'permission_callback'  => '__return_true',
+			)
+		);
+
 		/*
 		 * Get key events
 		 *
@@ -389,6 +423,9 @@ class WPCOM_Liveblog_Rest_Api {
 		$json        = $request->get_json_params();
 
 		$args = array(
+			'heading' =>  self::get_json_param( 'heading', $json ),
+			'heading_tag' => self::get_json_param( 'heading_tag', $json ),
+			'highlight' => self::get_json_param( 'highlight', $json ),
 			'post_id'         => self::get_json_param( 'post_id', $json ),
 			'content'         => self::get_json_param( 'content', $json ),
 			'entry_id'        => self::get_json_param( 'entry_id', $json ),

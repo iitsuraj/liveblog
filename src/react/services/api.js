@@ -4,15 +4,18 @@
  */
 import { ajax } from 'rxjs/observable/dom/ajax';
 
-import {
-  getCurrentTimestamp,
-} from '../utils/utils';
+import { getCurrentTimestamp } from '../utils/utils';
 
-const getParams = x => `?${Object.keys(x).map(p => `&${p}=${x[p]}`).join('')}`;
+const getParams = x =>
+  `?${Object.keys(x)
+    .map(p => `&${p}=${x[p]}`)
+    .join('')}`;
 
 export function getEntries(page, config, newestEntry, order = 'ASC') {
   const settings = {
-    url: `${config.endpoint_url}get-entries/${page}/${newestEntry.id || config.latest_entry_id}-${newestEntry.timestamp || config.latest_entry_timestamp}/${order}/`,
+    url: `${config.endpoint_url}get-entries/${page}/${
+      newestEntry.id || config.latest_entry_id
+    }-${newestEntry.timestamp || config.latest_entry_timestamp}/${order}/`,
     method: 'GET',
     crossDomain: config.cross_domain,
   };
@@ -30,7 +33,9 @@ export function polling(newestEntryTimestamp, config) {
   timestamp = Math.floor(timestamp / refreshInterval) * refreshInterval;
 
   const settings = {
-    url: `${config.endpoint_url}entries/${(newestEntryTimestamp + 1) || 0}/${timestamp}/`,
+    url: `${config.endpoint_url}entries/${
+      newestEntryTimestamp + 1 || 0
+    }/${timestamp}/`,
     method: 'GET',
     crossDomain: config.cross_domain,
   };
@@ -50,7 +55,7 @@ export function createEntry(entry, config, nonce = false) {
       author_id: entry.author,
       highlight: entry.highlight,
       contributor_ids: entry.contributors,
-	  heading_tag: entry.headingTag,
+      heading_tag: entry.headingTag,
     },
     headers: {
       'Content-Type': 'application/json',
@@ -76,7 +81,7 @@ export function updateEntry(entry, config, nonce = false) {
       author_id: entry.author,
       highlight: entry.highlight,
       contributor_ids: entry.contributors,
-	  heading_tag: entry.headingTag,
+      heading_tag: entry.headingTag,
     },
     headers: {
       'Content-Type': 'application/json',
@@ -111,7 +116,9 @@ export function deleteEntry(id, config, nonce = false) {
 
 export function getEvents(config, newestEntry) {
   const settings = {
-    url: `${config.endpoint_url}get-key-events/${newestEntry.id || config.latest_entry_id}-${newestEntry.timestamp || config.latest_entry_timestamp}`,
+    url: `${config.endpoint_url}get-key-events/${
+      newestEntry.id || config.latest_entry_id
+    }-${newestEntry.timestamp || config.latest_entry_timestamp}`,
     crossDomain: config.cross_domain,
     method: 'GET',
   };
@@ -121,7 +128,9 @@ export function getEvents(config, newestEntry) {
 
 export function jumpToEvent(id, config, newestEntry) {
   const settings = {
-    url: `${config.endpoint_url}jump-to-key-event/${id}/${newestEntry.id || 0}-${newestEntry.timestamp || 0}`,
+    url: `${config.endpoint_url}jump-to-key-event/${id}/${
+      newestEntry.id || 0
+    }-${newestEntry.timestamp || 0}`,
     crossDomain: config.cross_domain,
     method: 'GET',
   };
@@ -202,7 +211,9 @@ export function getMedia(params) {
   const location = window.location;
 
   const settings = {
-    url: `${location.protocol}//${location.hostname}/wp-json/wp/v2/media${getParams(params)}`,
+    url: `${location.protocol}//${
+      location.hostname
+    }/wp-json/wp/v2/media${getParams(params)}`,
     method: 'GET',
   };
 

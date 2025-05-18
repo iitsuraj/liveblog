@@ -1,25 +1,18 @@
-# This file is for unifying the coding style for different editors and IDEs
-# It is based on https://core.trac.wordpress.org/browser/trunk/.editorconfig
-# See https://editorconfig.org for more information about the standard.
-
-# WordPress Coding Standards
-# https://make.wordpress.org/core/handbook/coding-standards/
-
+# editorconfig.org
 root = true
 
 [*]
-charset = utf-8
-end_of_line = lf
-insert_final_newline = true
-trim_trailing_whitespace = true
 indent_style = tab
+end_of_line = lf
+indent_size = 4
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
 
-[{*.yml,*.feature}]
+[*.{js,json,scss,css}]
 indent_style = space
-indent_size = 2
+indent_size = tab
+tab_width = 2
 
 [*.md]
 trim_trailing_whitespace = false
-
-[*.txt]
-end_of_line = crlf

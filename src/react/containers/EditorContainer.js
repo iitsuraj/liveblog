@@ -21,7 +21,11 @@ import PreviewContainer from './PreviewContainer';
 // import AuthorSelectOption from '../components/AuthorSelectOption';
 import HTMLInput from '../components/HTMLInput';
 
-import Editor, { decorators, convertFromHTML, convertToHTML } from '../Editor/index';
+import Editor, {
+  decorators,
+  convertFromHTML,
+  convertToHTML,
+} from '../Editor/index';
 
 import { getImageSize } from '../Editor/utils';
 
@@ -55,16 +59,20 @@ class EditorContainer extends Component {
       readOnly: false,
       rawText: props.entry ? props.entry.content : '',
       heading: props.entry ? props.entry.heading : '',
-	  headingTag: props.entry ? props.entry.headingTag : 'div',
+      headingTag: props.entry ? props.entry.headingTag : 'div',
       highlight: props.entry ? props.entry.highlight : '',
     };
 
-    this.onChange = editorState => this.setState({
-      editorState,
-      rawText: html(convertToHTML(editorState.getCurrentContent())),
-    });
+    this.onChange = editorState =>
+      this.setState({
+        editorState,
+        rawText: html(convertToHTML(editorState.getCurrentContent())),
+      });
 
-    this.getUsers = debounce(this.getUsers.bind(this), props.config.author_list_debounce_time);
+    this.getUsers = debounce(
+      this.getUsers.bind(this),
+      props.config.author_list_debounce_time,
+    );
   }
 
   setReadOnly(state) {
@@ -80,26 +88,27 @@ class EditorContainer extends Component {
 
   syncRawTextToEditorState() {
     this.setState({
-      editorState:
-        EditorState.createWithContent(
-          convertFromHTML(this.state.rawText, {
-            setReadOnly: this.setReadOnly.bind(this),
-            handleImageUpload: this.handleImageUpload.bind(this),
-            defaultImageSize: this.props.config.default_image_size,
-          }),
-          decorators,
-        ),
+      editorState: EditorState.createWithContent(
+        convertFromHTML(this.state.rawText, {
+          setReadOnly: this.setReadOnly.bind(this),
+          handleImageUpload: this.handleImageUpload.bind(this),
+          defaultImageSize: this.props.config.default_image_size,
+        }),
+        decorators,
+      ),
     });
   }
 
   publish() {
-    const { updateEntry, entry, entryEditClose, createEntry, isEditing } = this.props;
+    const { updateEntry, entry, entryEditClose, createEntry, isEditing } =
+      this.props;
     const { editorState, authors, heading, highlight } = this.state;
-	let { headingTag } = this.state;
+    const { headingTag } = this.state;
     const content = this.getContent();
     const authorIds = authors.map(author => author.id);
     const author = authorIds.length > 0 ? authorIds[0] : false;
-    const contributors = authorIds.length > 1 ? authorIds.slice(1, authorIds.length) : false;
+    const contributors =
+      authorIds.length > 1 ? authorIds.slice(1, authorIds.length) : false;
     const htmlregex = /<(img|picture|video|audio|canvas|svg|iframe|embed) ?.*>/;
 
     // We don't want an editor publishing empty entries
@@ -107,7 +116,9 @@ class EditorContainer extends Component {
     // If we fail to find text then we should check for a valid
     // list of html elements, mainly visual for example images.
     if (!editorState.getCurrentContent().getPlainText().trim()) {
-      if (htmlregex.exec(convertToHTML(editorState.getCurrentContent())) === null) {
+      if (
+        htmlregex.exec(convertToHTML(editorState.getCurrentContent())) === null
+      ) {
         return;
       }
     }
@@ -116,7 +127,7 @@ class EditorContainer extends Component {
       updateEntry({
         id: entry.id,
         heading,
-		headingTag,
+        headingTag,
         content,
         author,
         highlight,
@@ -132,7 +143,7 @@ class EditorContainer extends Component {
       author,
       contributors,
       highlight,
-	  headingTag,
+      headingTag,
     });
 
     const newEditorState = EditorState.push(
@@ -141,7 +152,12 @@ class EditorContainer extends Component {
     );
 
     this.onChange(newEditorState);
-    this.setState({ readOnly: false, heading: '', highlight: '', headingTag: 'div' });
+    this.setState({
+      readOnly: false,
+      heading: '',
+      highlight: '',
+      headingTag: 'div',
+    });
   }
 
   onSelectAuthorChange(value) {
@@ -155,10 +171,12 @@ class EditorContainer extends Component {
     getAuthors(text, config)
       .timeout(10000)
       .map(res => res.response)
-      .subscribe(res => callback(null, {
-        options: res,
-        complete: false,
-      }));
+      .subscribe(res =>
+        callback(null, {
+          options: res,
+          complete: false,
+        }),
+      );
   }
 
   getAuthors(text) {
@@ -166,9 +184,11 @@ class EditorContainer extends Component {
     getAuthors(text, config)
       .timeout(10000)
       .map(res => res.response)
-      .subscribe(res => this.setState({
-        suggestions: res.map(author => author),
-      }));
+      .subscribe(res =>
+        this.setState({
+          suggestions: res.map(author => author),
+        }),
+      );
   }
 
   getHashtags(text) {
@@ -176,23 +196,25 @@ class EditorContainer extends Component {
     getHashtags(text, config)
       .timeout(10000)
       .map(res => res.response)
-      .subscribe(res => this.setState({
-        suggestions: res.map(hashtag => hashtag),
-      }));
+      .subscribe(res =>
+        this.setState({
+          suggestions: res.map(hashtag => hashtag),
+        }),
+      );
   }
 
   filterCommandSuggestions(suggestions, filter) {
     this.setState({
-      suggestions: suggestions.filter(item =>
-        item.substring(0, filter.length) === filter,
+      suggestions: suggestions.filter(
+        item => item.substring(0, filter.length) === filter,
       ),
     });
   }
 
   filterEmojiSuggestions(suggestions, filter) {
     this.setState({
-      suggestions: suggestions.filter(item =>
-        item.key.toString().substring(0, filter.length) === filter,
+      suggestions: suggestions.filter(
+        item => item.key.toString().substring(0, filter.length) === filter,
       ),
     });
   }
@@ -249,81 +271,87 @@ class EditorContainer extends Component {
       heading,
     } = this.state;
 
-	let { headingTag } = this.state;
+    let { headingTag } = this.state;
     const { isEditing, config, entry } = this.props;
-    const elementId = (entry && entry.id) ? entry.id : 1;
+    const elementId = entry && entry.id ? entry.id : 1;
 
-	headingTag = isEditing && entry ? entry.heading_tag : headingTag;
-	const options = [
-		"div",
-		"h3",
-		"h2"
-    ];
-	const validSiteNames = ['indianexpress', 'fe', 'loksatta'];
+    headingTag = isEditing && entry ? entry.heading_tag : headingTag;
+    const options = ['div', 'h3', 'h2'];
+    const validSiteNames = ['indianexpress', 'fe', 'loksatta'];
 
     return (
       <div className="liveblog-editor-container">
         {!isEditing && <h1 className="liveblog-editor-title">Add New Entry</h1>}
 
-        <label className="liveblog-editor-heading" htmlFor={ `heading-${elementId}` }>
+        <label
+          className="liveblog-editor-heading"
+          htmlFor={`heading-${elementId}`}
+        >
           <span>Heading</span>
           <input
             id={`heading-${elementId}`}
             type="text"
-            value={ heading }
+            value={heading}
             onChange={(event) => {
               this.setState({ heading: event.target.value });
-            } }
+            }}
           />
-		{ validSiteNames.includes( window.liveblog_settings.site_name ) && (
-				<select
-					onChange={ (event) => {
-					this.setState({ headingTag: event.target.value });
-					}}
-				>
-					{ options.map((option, index) => {
-						let selected = "";
-						if (headingTag === option) {
-							selected = "selected";
-						} else if (headingTag === '' && option === 'div') {
-							selected = "selected";
-						}
-						return <option key={index} value={option} selected={selected} >{option}</option>;
-					})}
-				</select>
-			)
-		}
+          {validSiteNames.includes(window.liveblog_settings.site_name) && (
+            <select
+              onChange={(event) => {
+                this.setState({ headingTag: event.target.value });
+              }}
+            >
+              {options.map((option, index) => {
+                let selected = '';
+                if (headingTag === option) {
+                  selected = 'selected';
+                } else if (headingTag === '' && option === 'div') {
+                  selected = 'selected';
+                }
+                return (
+                  <option key={index} value={option} selected={selected}>
+                    {option}
+                  </option>
+                );
+              })}
+            </select>
+          )}
         </label>
 
         <div className="liveblog-editor-tabs">
           <button
-            className={`liveblog-editor-tab ${mode === 'editor' ? 'is-active' : ''}`}
+            className={`liveblog-editor-tab ${
+              mode === 'editor' ? 'is-active' : ''
+            }`}
             onClick={() => this.setState({ mode: 'editor' })}
           >
             Visual
           </button>
           <button
-            className={`liveblog-editor-tab ${mode === 'raw' ? 'is-active' : ''}`}
+            className={`liveblog-editor-tab ${
+              mode === 'raw' ? 'is-active' : ''
+            }`}
             onClick={() => this.setState({ mode: 'raw' })}
           >
-              Text
+            Text
           </button>
           <button
-            className={`liveblog-editor-tab ${mode === 'preview' ? 'is-active' : ''}`}
+            className={`liveblog-editor-tab ${
+              mode === 'preview' ? 'is-active' : ''
+            }`}
             onClick={() => this.setState({ mode: 'preview' })}
           >
-              Preview
+            Preview
           </button>
         </div>
-        {
-          mode === 'preview' &&
+        {mode === 'preview' && (
           <PreviewContainer
             config={config}
             getEntryContent={() => this.getContent()}
           />
-        }
-        {
-          mode === 'editor' &&
+        )}
+        {mode === 'editor' && (
           <Editor
             editorState={editorState}
             onChange={this.onChange}
@@ -336,9 +364,8 @@ class EditorContainer extends Component {
             setReadOnly={this.setReadOnly.bind(this)}
             defaultImageSize={config.default_image_size}
           />
-        }
-        {
-          mode === 'raw' &&
+        )}
+        {mode === 'raw' && (
           <HTMLInput
             value={this.state.rawText}
             onChange={(text) => {
@@ -349,7 +376,7 @@ class EditorContainer extends Component {
             height="275px"
             width="100%"
           />
-        }
+        )}
         {/* <h2 className="liveblog-editor-subTitle">Authors:</h2>
         <Async
           multi={true}
@@ -365,17 +392,20 @@ class EditorContainer extends Component {
         <input
           type="checkbox"
           checked={this.state.highlight}
-          id={ `highlight-${elementId}` }
+          id={`highlight-${elementId}`}
           name="highlight"
           value="highlight"
-          onChange={ (event) => {
+          onChange={(event) => {
             this.setState({
               highlight: event.target.checked,
             });
-          } }
+          }}
         />
-        <label htmlFor={ `highlight-${elementId}` }> Highlight</label>
-        <button className="liveblog-btn liveblog-publish-btn" onClick={this.publish.bind(this)}>
+        <label htmlFor={`highlight-${elementId}`}> Highlight</label>
+        <button
+          className="liveblog-btn liveblog-publish-btn"
+          onClick={this.publish.bind(this)}
+        >
           {isEditing ? 'Publish Update' : 'Publish New Entry'}
         </button>
       </div>
@@ -397,9 +427,12 @@ EditorContainer.propTypes = {
 const mapStateToProps = state => state;
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({
-    ...apiActions,
-    ...userActions },
-  dispatch);
+  bindActionCreators(
+    {
+      ...apiActions,
+      ...userActions,
+    },
+    dispatch,
+  );
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditorContainer);

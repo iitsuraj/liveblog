@@ -817,7 +817,7 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 		 * @param int $id entry id
 		 * @return array An array of json encoded results
 		 */
-		public static function get_entries_paged( $page, $last_known_entry = false, $id = false ) {
+		public static function get_entries_paged( $page, $last_known_entry = false, $id = false, $order = 'ASC' ) {
 
 			if ( empty( self::$entry_query ) ) {
 				self::$entry_query = new WPCOM_Liveblog_Entry_Query( self::$post_id, self::KEY );
@@ -825,7 +825,9 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 
 			$per_page = WPCOM_Liveblog_Lazyloader::get_number_of_entries();
 
-			$entries = self::$entry_query->get_all_entries_asc();
+			// $entries = self::$entry_query->get_all_entries_asc();
+			// Get entries based on order
+    		$entries = ('ASC' === strtoupper($order)) ? self::$entry_query->get_all_entries_asc() : self::$entry_query->get_all_entries_desc();
 			$entries = self::flatten_entries( $entries );
 
 			if ( $last_known_entry ) {
