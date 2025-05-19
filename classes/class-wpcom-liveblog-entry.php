@@ -18,6 +18,9 @@ class WPCOM_Liveblog_Entry {
 	 *  in this meta key.
 	 */
 	const CONTRIBUTORS_META_KEY = 'liveblog_contributors';
+	const HEADING_META_KEY = 'liveblog_heading';
+	const HIGHLIGHT_META_KEY = 'liveblog_highlight';
+
 
 	/**
 	 * @var string Whether or not an entry should show an author
@@ -92,6 +95,24 @@ class WPCOM_Liveblog_Entry {
 	public function get_content() {
 		return $this->comment->comment_content;
 	}
+	/**
+	 * Return string.
+	 *
+	 * @param number $comment_id The id of the comment.
+	 */
+	public function get_heading($comment_id) {
+		$heading = get_comment_meta( $comment_id, self::HEADING_META_KEY, true );
+		return $heading;
+	}
+	/**
+	 * Return boolean.
+	 *
+	 * @param number $comment_id The id of the comment.
+	 */
+	public function get_highlight($comment_id) {
+		$highlight = get_comment_meta( $comment_id, self::HIGHLIGHT_META_KEY, true );
+		return $highlight == 1 ? true : false;
+	}
 
 	public function get_type() {
 		return $this->type;
@@ -134,6 +155,8 @@ class WPCOM_Liveblog_Entry {
 			'id'          => $entry_id,
 			'type'        => $this->get_type(),
 			'render'      => self::render_content( $this->get_content(), $this->comment ),
+			'heading'      => $this->get_heading($entry_id),
+			'highlight'      => $this->get_highlight($entry_id),
 			'content'     => apply_filters( 'liveblog_before_edit_entry', $this->get_content() ),
 			'css_classes' => $css_classes,
 			'timestamp'   => $this->get_timestamp(),
@@ -201,7 +224,8 @@ class WPCOM_Liveblog_Entry {
 		if ( isset( $args['contributor_ids'] ) ) {
 			self::add_contributors( $comment->comment_ID, $args['contributor_ids'] );
 		}
-
+		self::add_heading($comment->comment_ID, $args['heading']);
+		self::add_highlight($comment->comment_ID, $args['highlight']);
 		do_action( 'liveblog_insert_entry', $comment->comment_ID, $args['post_id'] );
 		$entry = self::from_comment( $comment );
 		return $entry;
@@ -428,6 +452,41 @@ class WPCOM_Liveblog_Entry {
 
 			add_comment_meta( $comment_id, self::CONTRIBUTORS_META_KEY, $contributors, true );
 		}
+	}
+
+
+	/**
+	 * Store the heading as comment meta.
+	 *
+	 * @param int    $comment_id The comment ID for the meta we should update.
+	 * @param string $heading    String to store as meta.
+	 */
+	private static function add_heading( $comment_id, $heading ) {
+		$heading = trim( (string) $heading );
+
+		if ( $heading === '' ) {
+			delete_comment_meta( $comment_id, self::HEADING_META_KEY );
+			return;
+		}
+
+		update_comment_meta( $comment_id, self::HEADING_META_KEY, $heading );
+	}
+
+	/**
+	 * Store the highlight as comment meta.
+	 *
+	 * @param int $comment_id The comment id for the meta we should update.
+	 * @param int $highlight string to store as meta.
+	 */
+	private static function add_highlight( $comment_id, $highlight ) {
+		if ( $highlight != 1 ) {
+			// Remove highlight meta for 0, null, false, or anything else not 1
+			delete_comment_meta( $comment_id, self::HIGHLIGHT_META_KEY );
+			return;
+		}
+
+		// Either update or add the highlight meta
+		update_comment_meta( $comment_id, self::HIGHLIGHT_META_KEY, 1 );
 	}
 
 	/**

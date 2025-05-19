@@ -1,6 +1,7 @@
 .liveblog-entry {
   position: relative;
   margin-bottom: 36px;
+  border-bottom: 0;
 }
 
 .liveblog-meta {
@@ -18,8 +19,7 @@
 }
 
 .liveblog-meta-time {
-  font-family: var( --wp--custom--font-main );
-  color: var(--wp--preset--color--brand-primary);
+  color: var(--newspack-primary-color);
   font-size: 12px;
   line-height: 1.3;
   margin-bottom: 10px;
@@ -27,7 +27,8 @@
 }
 
 .liveblog-entry-heading {
-	font-family: var( --wp--custom--font-main );
+	// font-family: var( --wp--custom--font-main );
+  font-size: 1.125rem;
 	display: block;
 	line-height: 1.3;
 	font-weight: 700;
@@ -36,7 +37,7 @@
 
 .liveblog-entry-content p {
 	margin-bottom: 1rem;
-	font-size: 16px;
+	font-size: 19px;
 	line-height: 1.5;
 
 	&:first-child {
@@ -232,8 +233,8 @@ strong {
     padding-bottom: 20px
 }
 
-.ie-liveblog-full-width-new-live-blog .ieo-datetime,
-.ie-liveblog-full-width-new-live-blog .liveblogbg {
+.liveblog-full-width-new-live-blog .ieo-datetime,
+.liveblog-full-width-new-live-blog .liveblogbg {
     margin-bottom: 15px;
     font-family: 'Roboto', sans-serif;
 }
@@ -401,7 +402,7 @@ strong {
     font-weight: 700
 }
 
-.ie-liveblog-full-width-new-live-blog .heading-lvblg {
+.liveblog-full-width-new-live-blog .heading-lvblg {
     color: #000;
     display: block;
     font-size: 16px;
@@ -450,7 +451,7 @@ strong {
     line-height: 18px
 }
 
-.ie-liveblog-full-width-new-live-blog .lvblg-box h2,
+.liveblog-full-width-new-live-blog .lvblg-box h2,
 .lvblg-box h3,
 .lvblg-box h4,
 .lvblg-box h5,
@@ -841,7 +842,7 @@ strong {
     padding-bottom: 18px
 }
 
-.ie-liveblog-full-width-new-live-blog .hlt-bot-text {
+.liveblog-full-width-new-live-blog .hlt-bot-text {
     color: #3e3e3e;
     font-family: 'Droid Serif', serif;
     font-size: 16px;
@@ -952,25 +953,25 @@ footer.liveblog-entry-tools {
     padding-left: 0;
 }
 
-.ie-liveblog-full-width-new-live-blog .withouthlgt .lvblg-box-shr {
+.liveblog-full-width-new-live-blog .withouthlgt .lvblg-box-shr {
     width: 13%;
 }
 
-.ie-liveblog-full-width-new-live-blog .withouthlgt .lvblg-box {
+.liveblog-full-width-new-live-blog .withouthlgt .lvblg-box {
     width: 87% !important;
 }
 
-.ie-liveblog-full-width-new-live-blog .liveblog-welcome-note,
-.ie-liveblog-full-width-new-live-blog .liveblog-meta-time {
-    font-family: 'Roboto', sans-serif;
-}
+// .liveblog-full-width-new-live-blog .liveblog-welcome-note,
+// .liveblog-full-width-new-live-blog .liveblog-meta-time {
+//     font-family: 'Roboto', sans-serif;
+// }
 
-.ie-liveblog-full-width-new-live-blog .liveblog-entry-heading,
-.liveblog-meta-time {
-    font-family: 'Droid Serif', serif;
-}
+// .liveblog-full-width-new-live-blog .liveblog-entry-heading,
+// .liveblog-meta-time {
+//     font-family: 'Droid Serif', serif;
+// }
 
-.ie-liveblog-full-width-new-live-blog .liveblog-entry:before {
+.liveblog-full-width-new-live-blog .liveblog-entry:before {
     content: '';
     position: absolute;
     width: 16px;
@@ -978,9 +979,10 @@ footer.liveblog-entry-tools {
     border: 1px #dc0505 solid;
     left: -25px;
     border-radius: 50%;
+    top: 0;
 }
 
-.ie-liveblog-full-width-new-live-blog .liveblog-entry:after {
+.liveblog-full-width-new-live-blog .liveblog-entry:after {
     content: '';
     width: 10px;
     height: 10px;
@@ -991,9 +993,9 @@ footer.liveblog-entry-tools {
     left: -22px;
 }
 
-.ie-liveblog-full-width-new-live-blog .liveblog-entry-content p {
-    margin-bottom: 0;
-}
+// .liveblog-full-width-new-live-blog .liveblog-entry-content p {
+//     margin-bottom: 0;
+// }
 
 .ieo-datetime,
 .liveblogbg {
@@ -1001,8 +1003,8 @@ footer.liveblog-entry-tools {
 }
 
 
-.ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a.sd-button,
-.ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a.sd-button:hover {
+.liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a.sd-button,
+.liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a.sd-button:hover {
     padding: 0;
     border-radius: 0;
     margin: 0;
@@ -1013,25 +1015,25 @@ footer.liveblog-entry-tools {
     line-height: 1;
 }
 
-.ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-].share-facebook a.sd-button {
+.liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-].share-facebook a.sd-button {
     background: url('https://indianexpress.com/wp-content/themes/indianexpress/images/icon-fb.svg') no-repeat 4px 0 !important;
 }
 
-.ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-].share-twitter a.sd-button {
+.liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-].share-twitter a.sd-button {
     background: url('https://indianexpress.com/wp-content/themes/indianexpress/images/x-story.svg') no-repeat !important;
 }
 
-.ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-].share-jetpack-whatsapp a.sd-button {
+.liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-].share-jetpack-whatsapp a.sd-button {
     background: url('https://indianexpress.com/wp-content/themes/indianexpress/images/icon-whatsapp.svg') no-repeat !important;
 }
 
-.ie-liveblog-full-width-new-live-blog .sd-content ul {
+.liveblog-full-width-new-live-blog .sd-content ul {
     list-style: none !important;
     margin: 0 !important;
     padding: 0 !important;
 }
 
-.ie-liveblog-full-width-new-live-blog .sd-content ul li {
+.liveblog-full-width-new-live-blog .sd-content ul li {
     margin: 0;
     padding: 0;
     display: inline-block;
@@ -1039,7 +1041,7 @@ footer.liveblog-entry-tools {
     margin-right: 0 !important;
 }
 
-.ie-liveblog-full-width-new-live-blog .sd-content ul li a {
+.liveblog-full-width-new-live-blog .sd-content ul li a {
     cursor: pointer;
     border: 0;
     box-shadow: none;
@@ -1051,36 +1053,36 @@ footer.liveblog-entry-tools {
     width: auto;
 }
 
-.ie-liveblog-full-width-new-live-blog .sd-content ul li.share-facebook div.option.option-smart-off a:before,
-.ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li.share-facebook a:before,
-.ie-liveblog-full-width-new-live-blog .sd-social-icon-text .sd-content li.share-facebook a:before,
-.ie-liveblog-full-width-new-live-blog .sd-social-text .sd-content ul li.share-facebook a:before,
+.liveblog-full-width-new-live-blog .sd-content ul li.share-facebook div.option.option-smart-off a:before,
+.liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li.share-facebook a:before,
+.liveblog-full-width-new-live-blog .sd-social-icon-text .sd-content li.share-facebook a:before,
+.liveblog-full-width-new-live-blog .sd-social-text .sd-content ul li.share-facebook a:before,
 
-.ie-liveblog-full-width-new-live-blog .sd-content ul li.share-jetpack-whatsapp div.option.option-smart-off a:before,
-.ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li.share-jetpack-whatsapp a:before,
-.ie-liveblog-full-width-new-live-blog .sd-social-icon-text .sd-content li.share-jetpack-whatsapp a:before,
-.ie-liveblog-full-width-new-live-blog .sd-social-official .sd-content li.share-jetpack-whatsapp a:before,
-.ie-liveblog-full-width-new-live-blog .sd-social-text .sd-content ul li.share-jetpack-whatsapp a:before,
-.ie-liveblog-full-width-new-live-blog .sd-content ul li.share-twitter div.option.option-smart-off a:before,
-.ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li.share-twitter a:before,
-.ie-liveblog-full-width-new-live-blog .sd-social-icon-text .sd-content li.share-twitter a:before,
-.ie-liveblog-full-width-new-live-blog .sd-social-text .sd-content ul li.share-twitter a:before {
+.liveblog-full-width-new-live-blog .sd-content ul li.share-jetpack-whatsapp div.option.option-smart-off a:before,
+.liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li.share-jetpack-whatsapp a:before,
+.liveblog-full-width-new-live-blog .sd-social-icon-text .sd-content li.share-jetpack-whatsapp a:before,
+.liveblog-full-width-new-live-blog .sd-social-official .sd-content li.share-jetpack-whatsapp a:before,
+.liveblog-full-width-new-live-blog .sd-social-text .sd-content ul li.share-jetpack-whatsapp a:before,
+.liveblog-full-width-new-live-blog .sd-content ul li.share-twitter div.option.option-smart-off a:before,
+.liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li.share-twitter a:before,
+.liveblog-full-width-new-live-blog .sd-social-icon-text .sd-content li.share-twitter a:before,
+.liveblog-full-width-new-live-blog .sd-social-text .sd-content ul li.share-twitter a:before {
     display: none !important;
 }
 
-.ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a,
-.ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a:hover,
-.ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] div.option a {
+.liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a,
+.liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a:hover,
+.liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] div.option a {
     top: 0 !important;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
-    .ie-liveblog-full-width-new-live-blog .sd-content ul li a.sd-button:before {
+    .liveblog-full-width-new-live-blog .sd-content ul li a.sd-button:before {
         position: relative;
     }
 }
 
-.ie-liveblog-full-width-new-live-blog .sd-content ul li a.sd-button:before {
+.liveblog-full-width-new-live-blog .sd-content ul li a.sd-button:before {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     display: inline-block;
@@ -1089,7 +1091,7 @@ footer.liveblog-entry-tools {
     vertical-align: top;
 }
 
-.ie-liveblog-full-width-new-live-blog .sharing-screen-reader-text {
+.liveblog-full-width-new-live-blog .sharing-screen-reader-text {
     clip: rect(1px, 1px, 1px, 1px);
     height: 1px;
     overflow: hidden;
@@ -1097,7 +1099,7 @@ footer.liveblog-entry-tools {
     width: 1px;
 }
 
-.ie-liveblog-full-width-new-live-blog .liveblogbg {
+.liveblog-full-width-new-live-blog .liveblogbg {
     background: #cf0000;
     font-size: 18px;
     font-weight: 700;
@@ -1106,7 +1108,7 @@ footer.liveblog-entry-tools {
     position: relative
 }
 
-.ie-liveblog-full-width-new-live-blog .liveblogbg:before {
+.liveblog-full-width-new-live-blog .liveblogbg:before {
     background: #fff;
     border-radius: 20px;
     content: "";
@@ -1118,26 +1120,26 @@ footer.liveblog-entry-tools {
     left: 30px
 }
 
-.ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a.sd-button:before {
+.liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a.sd-button:before {
     display: none !important;
 }
 
 @media only screen and (max-width: 768px) {
 
-    .ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a.sd-button,
-    .ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a.sd-button:hover {
+    .liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a.sd-button,
+    .liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a.sd-button:hover {
         margin-left: 13px;
     }
 
-    .ie-liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a.sd-button:before {
+    .liveblog-full-width-new-live-blog .sd-social-icon .sd-content ul li[class*=share-] a.sd-button:before {
         display: none !important;
     }
 
-    .ie-liveblog-full-width-new-live-blog .lvblg-rgt.withouthlgt .sd-content {
+    .liveblog-full-width-new-live-blog .lvblg-rgt.withouthlgt .sd-content {
         float: right;
     }
 
-    .ie-liveblog-full-width-new-live-blog .lvblg-rgt .lvblg-box-shr {
+    .liveblog-full-width-new-live-blog .lvblg-rgt .lvblg-box-shr {
         width: 100%;
         justify-content: space-between;
         align-items: center;
@@ -1147,69 +1149,69 @@ footer.liveblog-entry-tools {
         margin-top: 10px;
     }
 
-    .ie-liveblog-full-width-new-live-blog .full-page-liveblog .lvblg-rgt .lvblg-box-shr {
+    .liveblog-full-width-new-live-blog .full-page-liveblog .lvblg-rgt .lvblg-box-shr {
         flex-direction: row;
     }
 
-    .ie-liveblog-full-width-new-live-blog .lvblg-rgt .lvblg-box {
+    .liveblog-full-width-new-live-blog .lvblg-rgt .lvblg-box {
         width: initial;
         border-left: 0;
         float: inherit;
         padding-left: inherit;
     }
 
-    .ie-liveblog-full-width-new-live-blog .liveblog-entry-main>div {
+    .liveblog-full-width-new-live-blog .liveblog-entry-main>div {
         flex-direction: column;
         align-items: flex-start;
         justify-content: flex-start;
     }
 
-    .ie-liveblog-full-width-new-live-blog .lvblg-rgt .brdr20 {
+    .liveblog-full-width-new-live-blog .lvblg-rgt .brdr20 {
         padding: 0;
         border: 0;
     }
 
-    .ie-liveblog-full-width-new-live-blog footer.liveblog-entry-tools {
+    .liveblog-full-width-new-live-blog footer.liveblog-entry-tools {
         padding-bottom: 0;
         margin-bottom: 30px;
     }
 
-    .ie-liveblog-full-width-new-live-blog .body-lvblg p {
+    .liveblog-full-width-new-live-blog .body-lvblg p {
         margin-bottom: 0;
     }
 
-    .ie-liveblog-full-width-new-live-blog .liveblog-entry:after {
-        top: 4px;
-    }
+    // .liveblog-full-width-new-live-blog .liveblog-entry:after {
+    //     top: 4px;
+    // }
 
-    .ie-liveblog-full-width-new-live-blog .liveblog-entry:before {
-        left: -26px;
-    }
+    // .liveblog-full-width-new-live-blog .liveblog-entry:before {
+    //     left: -26px;
+    // }
 
-    .ie-liveblog-full-width-new-live-blog .sd-content ul li {
+    .liveblog-full-width-new-live-blog .sd-content ul li {
         margin-left: 10px !important;
         margin-right: 0 !important;
     }
 
-    .ie-liveblog-full-width-new-live-blog .sd-content ul li:last-child {
+    .liveblog-full-width-new-live-blog .sd-content ul li:last-child {
         margin-right: 0 !important;
     }
 
-    .ie-liveblog-full-width-new-live-blog .sd-content ul li a img {
+    .liveblog-full-width-new-live-blog .sd-content ul li a img {
         width: 16px;
         height: 16px;
     }
 
-    .ie-liveblog-full-width-new-live-blog .withouthlgt .lvblg-box {
+    .liveblog-full-width-new-live-blog .withouthlgt .lvblg-box {
         width: 100% !important;
     }
 
-    .ie-liveblog-full-width-new-live-blog .ieo-datetime,
-    .ie-liveblog-full-width-new-live-blog .liveblogbg {
+    .liveblog-full-width-new-live-blog .ieo-datetime,
+    .liveblog-full-width-new-live-blog .liveblogbg {
         margin-bottom: 0;
     }
 
-    .ie-liveblog-full-width-new-live-blog .liveblog-entry .sd-content ul li {
+    .liveblog-full-width-new-live-blog .liveblog-entry .sd-content ul li {
         margin-right: 10px !important;
         margin-left: 0 !important;
     }
@@ -1220,7 +1222,7 @@ footer.liveblog-entry-tools {
     }
 }
 
-.ie-liveblog-full-width-new-live-blog .liveblog-pagination .loadmore-button.loadmore-button__plus {
+.liveblog-full-width-new-live-blog .liveblog-pagination .loadmore-button.loadmore-button__plus {
     background-color: #ffffff;
     color: #2b6ea8;
     cursor: pointer;

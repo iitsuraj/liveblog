@@ -3,7 +3,6 @@
 	display: block;
 	font-weight: 700;
 	text-transform: uppercase;
-	font-family: var( --wp--custom--font-main );
 	background: #f6f6f6;
 	padding: 10px;
 	margin-bottom: 16px;
@@ -30,15 +29,15 @@
 
 .liveblog-feed {
   position: relative;
-  padding-left: 27px;
+  padding-left: 30px;
 
   &:before {
 	  content: "";
-	width: 1px;
-	height: 100%;
-	position: absolute;
-	left: 10px;
-	background: rgba(179, 179, 179, 0.6);
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    left: 11px;
+    background: rgba(179, 179, 179, 0.6);
   }
 }
 

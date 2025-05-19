@@ -4,7 +4,7 @@
  * Plugin Name: Liveblog
  * Plugin URI: http://wordpress.org/extend/plugins/liveblog/
  * Description: Empowers website owners to provide rich and engaging live event coverage to a large, distributed audience.
- * Version:     1.9.7
+ * Version:     1.9.9
  * Author:      WordPress.com VIP, Big Bite Creative and contributors
  * Author URI: https://github.com/Automattic/liveblog/graphs/contributors
  * Text Domain: liveblog
@@ -825,12 +825,11 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 
 			$per_page = WPCOM_Liveblog_Lazyloader::get_number_of_entries();
 
-			// $entries = self::$entry_query->get_all_entries_asc();
 			// Get entries based on order
     		$entries = ('ASC' === strtoupper($order)) ? self::$entry_query->get_all_entries_asc() : self::$entry_query->get_all_entries_desc();
 			$entries = self::flatten_entries( $entries );
 
-			if ( $last_known_entry ) {
+			if ( $last_known_entry && 'ASC' === strtoupper($order)) {
 				$last_known_entry = explode( '-', $last_known_entry );
 				if ( isset( $last_known_entry[0], $last_known_entry[1] ) ) {
 					$last_entry_id = (int) $last_known_entry[0];
@@ -1188,7 +1187,7 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 				return $content;
 			}
 
-			$liveblog_output = '<div id="wpcom-liveblog-container" class="' . self::$post_id . '"></div>';
+			$liveblog_output = '<div id="wpcom-liveblog-container" class="' . self::$post_id . ' liveblog-full-width-new-live-blog"></div>';
 
 			$liveblog_output = apply_filters( 'liveblog_add_to_content', $liveblog_output, $content, self::$post_id );
 

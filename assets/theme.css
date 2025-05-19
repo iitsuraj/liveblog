@@ -3,11 +3,11 @@
 */
 
 .liveblog-entry {
-  display: flex;
+  /* display: flex;
   padding: 1rem;
   background: #f7f7f7;
   border-top: 2px solid #eee;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid #eee; */
 }
 
 .liveblog-entry.is-key-event {

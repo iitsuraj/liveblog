@@ -602,10 +602,11 @@ class WPCOM_Liveblog_Rest_Api {
 		$post_id          = $request->get_param( 'post_id' );
 		$page             = $request->get_param( 'page' );
 		$last_known_entry = $request->get_param( 'last_known_entry' );
+		$order = $request->get_param( 'order' );
 
 		self::set_liveblog_vars( $post_id );
 
-		$entries = WPCOM_Liveblog::get_entries_paged( $page, $last_known_entry );
+		$entries = WPCOM_Liveblog::get_entries_paged( $page, $last_known_entry, null, $order );
 
 		// Possibly do not cache the response
 		WPCOM_Liveblog::prevent_caching_if_needed();
