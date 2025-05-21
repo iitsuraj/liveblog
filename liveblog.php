@@ -36,9 +36,9 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 		const NONCE_KEY               = '_wpnonce'; // Using these strings since they're hard coded in the rest api. It'll still work fine for < 4.4
 		const NONCE_ACTION            = 'wp_rest';
 
-		const REFRESH_INTERVAL                = 10;   // how often should we refresh
-		const DEBUG_REFRESH_INTERVAL          = 2;   // how often we refresh in development mode
-		const FOCUS_REFRESH_INTERVAL          = 30;   // how often we refresh in when window not in focus
+		const REFRESH_INTERVAL                = 60;   // how often should we refresh
+		const DEBUG_REFRESH_INTERVAL          = 10;   // how often we refresh in development mode
+		const FOCUS_REFRESH_INTERVAL          = 300;   // how often we refresh in when window not in focus
 		const MAX_CONSECUTIVE_RETRIES         = 100; // max number of failed tries before polling is disabled
 		const HUMAN_TIME_DIFF_UPDATE_INTERVAL = 60; // how often we change the entry human timestamps: "a minute ago"
 		const DELAY_THRESHOLD                 = 5;  // how many failed tries after which we should increase the refresh interval
@@ -54,7 +54,7 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 		public static $post_id                = null;
 		private static $entry_query           = null;
 		private static $do_not_cache_response = false;
-		private static $cache_control_max_age = null;
+		private static $cache_control_max_age = 30;
 		private static $custom_template_path  = null;
 
 		public static $is_rest_api_call        = false;
@@ -196,6 +196,7 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 			// We need to check the Liveblog autoarchive date on each time a new entry is added or updated to
 			// ensure we extend the date out correctly to the next archive point based on the configured offset.
 			add_filter( 'liveblog_before_insert_entry', array( __CLASS__, 'update_autoarchive_expiry' ), 10, 1 );
+			add_filter( 'liveblog_add_to_content', array( __CLASS__, 'generate_liveblog_html' ), 10, 3 );
 		}
 
 		/**
@@ -823,7 +824,7 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 				self::$entry_query = new WPCOM_Liveblog_Entry_Query( self::$post_id, self::KEY );
 			}
 
-			$per_page = WPCOM_Liveblog_Lazyloader::get_number_of_entries();
+			$per_page = WPCOM_Liveblog_Lazyloader::get_number_of_entries(self::$post_id);
 
 			// Get entries based on order
     		$entries = ('ASC' === strtoupper($order)) ? self::$entry_query->get_all_entries_asc() : self::$entry_query->get_all_entries_desc();
@@ -1442,6 +1443,39 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 			return $args;
 		}
 
+		public static function generate_liveblog_html( $existing_output, $content, $post_id ) {
+			$request = self::get_request_data();
+			$entries_data = self::get_entries_paged( $request->page, $request->last );
+
+			$feed_html = '';
+
+			if ( isset( $entries_data['entries'] ) && is_array( $entries_data['entries'] ) ) {
+				foreach ( $entries_data['entries'] as $entry ) {
+					$time = isset( $entry->entry_time ) ? date( 'H:i', $entry->entry_time ) . ' (IST) ' . date( 'd M Y', $entry->entry_time ) : '';
+
+
+					$feed_html .= '<article id="id_' . esc_attr( $entry->id ) . '" class="liveblog-entry ' . esc_attr( $entry->css_classes ) . '">
+						<div class="liveblog-entry-main">
+							<div>
+								<div><span class="liveblog-meta-time">' . esc_html( $time ) . '</span></div>
+								<div class="liveblog-entry-heading">' . wp_kses_post( $entry->heading ) . '</div>
+								<div class="liveblog-entry-content">' . wp_kses_post( $entry->render ) . '</div>
+							</div>
+						</div>
+					</article>';
+				}
+			}
+
+			// Final complete output
+			return '
+				<div id="wpcom-liveblog-container" class="' . esc_attr( $post_id ) . ' liveblog-full-width-new-live-blog">
+					<div style="position: relative;">
+						<div class="liveblog-welcome-note">Live Updates</div>
+						<div class="liveblog-feed">' . $feed_html . '</div>
+					</div>
+				</div>';
+		}
+
 		/**
 		 * Indicate in the post list that a post is a liveblog
 		 *
@@ -1774,21 +1808,80 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 				return $metadata;
 			}
 
+			$featured_image = get_the_post_thumbnail_url($post->ID, 'full');
+			$entry = $entries['entries'][0] ?? null;
+			$author = $entry->authors[0] ?? null;
+			$author_name = $author->name ?? 'Shekhawati Live Desk';
+			$author_key  = $author->key  ?? 'neeraj';
+			$author_link = 'https://shekhawatilive.com/author/' . $author_key . '/';
+
+			$metadata['@type']          = 'LiveBlogPosting';
+			$metadata['@context']          = 'https://schema.org';
+			$metadata['@id']          = get_permalink($post->ID);
+			$metadata['headline']          = get_the_title($post->ID);
+			$metadata['description'] = get_the_excerpt($post->ID);
+        	$metadata['datePublished'] = get_the_date('c', $post->ID);
+        	$metadata['dateModified'] = get_the_modified_date('c', $post->ID);
+        	$metadata['coverageStartTime'] = get_the_date('c', $post->ID);
+        	// $metadata['coverageEndTime'] = get_the_modified_date('c', $post->ID);
+        	$metadata['url'] = get_permalink($post->ID);
+        	$metadata['mainEntityOfPage'] = get_permalink($post->ID).'#article';
+
+			$metadata['image'] = [
+				"@type" => "ImageObject",
+				"url" => $featured_image,
+				"width" => 1200, // adjust as needed
+				"height" => 900, // adjust as needed
+				"caption" => $metadata['headline'],
+				"description" => $metadata['description'],
+        	];
+			$metadata['author'] = [
+				"@type" => "Person",
+				"name" => $author_name,
+				"sameAs" => $author_link,
+			];
+        	$metadata['publisher'] = [
+				"@type" => "Organization",
+				"name" => get_bloginfo('name'),
+				"logo" => [
+					"@type" => "ImageObject",
+					"url" => get_theme_mod('custom_logo') ? wp_get_attachment_image_src(get_theme_mod('custom_logo'), 'full')[0] : '',
+					"width" => 452,
+					"height" => 193
+				]
+			];
+			$metadata['about'] = [
+				"@type" => "Event",
+				"name" => $metadata['headline'],
+				"startDate" => $metadata['datePublished'],
+				// Don't include endDate if it's still ongoing
+				// "endDate" => get_the_modified_date('c', $post->ID),
+				"eventStatus" => "Live",
+				"eventAttendanceMode" => "https://schema.org/MixedEventAttendanceMode",
+				"location" => [
+					"@type" => "Place",
+					"name" => "India",
+					"address" => [
+						"@type" => "PostalAddress",
+						"addressCountry" => "IN"
+					]
+				],
+				"description" => $metadata['description'],
+				"image" => $metadata['image']
+			];
+
 			foreach ( $entries['entries'] as $entry ) {
 				$blog_item = [
 					'@type'            => 'BlogPosting',
-					'headline'         => WPCOM_Liveblog_Entry::get_entry_title( $entry ),
+					'headline'         => $entry->heading, //WPCOM_Liveblog_Entry::get_entry_title( $entry ),
 					'url'              => $entry->share_link,
-					'mainEntityOfPage' => $entry->share_link,
+					'mainEntityOfPage' => $metadata['url'],
 					'datePublished'    => date( 'c', $entry->entry_time ),
 					'dateModified'     => date( 'c', $entry->timestamp ),
-					'author'           => [
-						'@type' => 'Person',
-						'name'  => $entry->authors[0]['name'],
-					],
-					'articleBody'      => [
-						'@type' => 'Text',
-					],
+					'author'           => $metadata['author'],
+					'image' => $metadata['image'],
+					'publisher' => $metadata['publisher'],
+					'articleBody'      => $entry->content,
 				];
 
 				if ( isset( $metadata['publisher'] ) ) {
@@ -1798,7 +1891,6 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 				$blog_updates[] = json_decode( wp_json_encode( $blog_item ) );
 			}
 
-			$metadata['@type']          = 'LiveBlogPosting';
 			$metadata['liveBlogUpdate'] = $blog_updates;
 
 			/**

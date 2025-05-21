@@ -6,7 +6,10 @@
  * Handles lazyloading of Liveblog entries.
  */
 class WPCOM_Liveblog_Lazyloader {
-
+	/**
+	 * Set the meta_key and meta_value
+	 */
+	const META_KEY_LIMIT    = '_liveblog_key_entry_limit';
 	/**
 	 * @var bool
 	 */
@@ -75,7 +78,7 @@ class WPCOM_Liveblog_Lazyloader {
 	 *
 	 * @return int
 	 */
-	public static function get_number_of_entries() {
+	public static function get_number_of_entries($id=0) {
 
 		if ( ! isset( self::$number_of_entries ) ) {
 			self::$number_of_entries = 5;
@@ -86,6 +89,12 @@ class WPCOM_Liveblog_Lazyloader {
 			 * @param int $number_of_entries Number of Liveblog entries.
 			 */
 			$number = (int) apply_filters( 'liveblog_number_of_entries', self::$number_of_entries );
+			if(isset($id) && $id !==0){
+				$limit = get_post_meta( $id, self::META_KEY_LIMIT, true );
+				if ( isset( $limit ) ) {
+					$number = $limit;
+				}
+			}
 			if ( $number > 0 ) {
 				// Limit the number of Liveblog entries used for lazyloading to 100.
 				self::$number_of_entries = min( $number, 100 );
