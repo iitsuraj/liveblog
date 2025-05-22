@@ -36,9 +36,9 @@ if ( ! class_exists( 'WPCOM_Liveblog' ) ) :
 		const NONCE_KEY               = '_wpnonce'; // Using these strings since they're hard coded in the rest api. It'll still work fine for < 4.4
 		const NONCE_ACTION            = 'wp_rest';
 
-		const REFRESH_INTERVAL                = 60;   // how often should we refresh
+		const REFRESH_INTERVAL                = 10;   // how often should we refresh
 		const DEBUG_REFRESH_INTERVAL          = 10;   // how often we refresh in development mode
-		const FOCUS_REFRESH_INTERVAL          = 300;   // how often we refresh in when window not in focus
+		const FOCUS_REFRESH_INTERVAL          = 30;   // how often we refresh in when window not in focus
 		const MAX_CONSECUTIVE_RETRIES         = 100; // max number of failed tries before polling is disabled
 		const HUMAN_TIME_DIFF_UPDATE_INTERVAL = 60; // how often we change the entry human timestamps: "a minute ago"
 		const DELAY_THRESHOLD                 = 5;  // how many failed tries after which we should increase the refresh interval
